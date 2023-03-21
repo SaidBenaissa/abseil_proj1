@@ -13,12 +13,21 @@ absl::StatusOr<int> DivideAndReturn(int x, int y) {
     absl::Status status = Divide(x, y);
     if (!status.ok()) {
         return status;
+    } else {
+        return x / y;
     }
-    return x / y;
 }
 
-int main() {
-    absl::StatusOr<int> result = DivideAndReturn(10, 0);
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <x> <y>" << std::endl;
+        return 1;
+    }
+
+    int x = std::stoi(argv[1]);
+    int y = std::stoi(argv[2]);
+
+    absl::StatusOr<int> result = DivideAndReturn(x, y);
     if (!result.ok()) {
         std::cerr << "Error: " << result.status().message() << std::endl;
         return 1;
